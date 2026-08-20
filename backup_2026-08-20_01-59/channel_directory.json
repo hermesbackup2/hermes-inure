@@ -1,0 +1,19 @@
+{
+  "updated_at": "2026-08-20T01:55:28.436701",
+  "platforms": {
+    "telegram": [
+      {
+        "id": "7747086163",
+        "name": "Inure",
+        "type": "dm",
+        "thread_id": null
+      },
+      {
+        "id": "1994789266",
+        "name": "Alireza",
+        "type": "dm",
+        "thread_id": null
+      }
+    ]
+  }
+}
