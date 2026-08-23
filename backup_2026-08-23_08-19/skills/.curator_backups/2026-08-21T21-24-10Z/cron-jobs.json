@@ -1,0 +1,51 @@
+{
+  "jobs": [
+    {
+      "id": "7a9a4a73f3a7",
+      "name": "hermes-backup-24h",
+      "prompt": "Daily Hermes backup. Script handles everything: snapshots critical .hermes state and pushes to github.com/hermestel/hermes-backup via HTTPS.",
+      "skills": [],
+      "skill": null,
+      "model": null,
+      "provider": null,
+      "provider_snapshot": null,
+      "model_snapshot": null,
+      "base_url": null,
+      "script": "backup.sh",
+      "no_agent": true,
+      "context_from": null,
+      "schedule": {
+        "kind": "interval",
+        "minutes": 1440,
+        "display": "every 1440m"
+      },
+      "schedule_display": "every 1440m",
+      "repeat": {
+        "times": null,
+        "completed": 6
+      },
+      "enabled": false,
+      "state": "paused",
+      "paused_at": "2026-08-15T19:55:08.865219+00:00",
+      "paused_reason": null,
+      "created_at": "2026-07-31T08:29:22.792724+00:00",
+      "next_run_at": "2026-08-16T19:51:34.540482+00:00",
+      "last_run_at": "2026-08-15T19:51:34.540482+00:00",
+      "last_status": "error",
+      "last_error": "Script exited with code 128\nstderr:\nremote: Your account is suspended. Please visit https://support.github.com for more information.\nfatal: unable to access 'https://github.com/hermestel/hermes-backup.git/': The requested URL returned error: 403",
+      "last_delivery_error": null,
+      "deliver": "origin",
+      "origin": {
+        "platform": "telegram",
+        "chat_id": "7747086163",
+        "chat_name": "Inure",
+        "thread_id": null,
+        "user_id": "7747086163"
+      },
+      "enabled_toolsets": null,
+      "workdir": null,
+      "fire_claim": null
+    }
+  ],
+  "updated_at": "2026-08-15T19:55:08.865542+00:00"
+}
