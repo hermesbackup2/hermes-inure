@@ -1,15 +1,19 @@
 import re
+import logging
 import requests
+import yt_dlp
 from typing import Optional, Tuple, List, Dict, Any
 
+logger = logging.getLogger(__name__)
+
 SC_URL_RE = re.compile(r'https?://(?:www\.|on\.)?soundcloud\.com/[^\s]+', re.IGNORECASE)
+
 
 def is_sc_url(text: str) -> bool:
     return bool(SC_URL_RE.search(text))
 
 
 def _resolve_short_url(url: str) -> str:
-    """Resolve on.soundcloud.com / sc links."""
     try:
         r = requests.head(url, allow_redirects=True, timeout=10, headers={"User-Agent": "Mozilla/5.0"})
         return r.url
@@ -19,16 +23,16 @@ def _resolve_short_url(url: str) -> str:
 
 def _extract_info(url: str) -> Optional[Dict[Any, Any]]:
     try:
-        from yt_dlp import YoutubeDL
         ydl_opts = {
             'quiet': True,
             'no_warnings': True,
             'skip_download': True,
             'ignoreerrors': True,
         }
-        with YoutubeDL(ydl_opts) as ydl:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             return ydl.extract_info(url, download=False)
-    except Exception:
+    except Exception as e:
+        logger.error(f"yt-dlp extraction failed for {url}: {e}")
         return None
 
 
@@ -92,17 +96,36 @@ def search_tracks(query: str, offset: int, limit: int) -> Tuple[List[Dict[Any, A
 
 def get_track_info(track_id: Any) -> Optional[Dict[Any, Any]]:
     try:
-        from yt_dlp import YoutubeDL
         ydl_opts = {
             'quiet': True,
             'no_warnings': True,
             'skip_download': True,
             'ignoreerrors': True,
         }
-        with YoutubeDL(ydl_opts) as ydl:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(f"scsearch1:{track_id}", download=False)
             if info and info.get('entries'):
                 return _entry_to_track(info['entries'][0])
     except Exception:
         pass
     return None
+
+
+def extract_track_info(url: str) -> Dict[str, Any]:
+    if not url or not isinstance(url, str):
+        raise ValueError("Invalid URL provided.")
+    if not is_sc_url(url):
+        raise ValueError("URL does not appear to be a valid SoundCloud link.")
+    info = _extract_info(url)
+    if info is None:
+        raise ValueError("Could not extract track info (URL might be private or deleted).")
+    track_url = info.get('url')
+    if not track_url:
+        raise ValueError("Track is not downloadable (possibly requires authentication or DRM).")
+    return {
+        'title': info.get('title', 'Unknown Title'),
+        'uploader': info.get('uploader', 'Unknown Artist'),
+        'duration': info.get('duration', 0),
+        'url': track_url,
+        'thumbnail': info.get('thumbnail'),
+    }
