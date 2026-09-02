@@ -12,6 +12,7 @@ approvals:
   destructive_slash_confirm: false
 command_allowlist:
   - script execution via -e/-c flag
+  - recursive delete
   - script execution via heredoc
   - execute_code
 onboarding:
