@@ -1,0 +1,4 @@
+*.git-credentials*
+*.lock
+__pycache__/
+*.pyc
