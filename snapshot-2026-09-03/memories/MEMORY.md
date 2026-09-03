@@ -2,7 +2,7 @@ When user grants permission to push code to GitHub, push the complete project (u
 §
 User's Telegram bot: @inurepricebot, token: 8922929401:***. Deployed on Railway.app. Repo: hermestel/gold-price-bot
 §
-SoundCloud bot @soundcloud_dl_bot (inure_soundcloudbot): token in .env (python-dotenv). Modular: bot.py/config.py/services/{soundcloud.py,downloader.py}/sessions.py. Run (bg): cd /data/workspace/soundcloud-bot && python3 bot.py. Code in TWO places: workspace (runtime+venv) + Obsidian vault notes/soundcloud-bot/code/ (source-of-truth on GitHub). ALLOWED_USER_IDS gates access.
+SoundCloud bot @soundcloud_dl_bot (inure_soundcloudbot): token in .env (python-dotenv). Modular: bot.py/config.py/services/{soundcloud.py,downloader.py}/sessions.py. Run (bg): cd /data/workspace/soundcloud-bot && python3 bot.py. Code in TWO places: workspace (runtime+venv) + Obsidian vault notes/soundcloud-bot/code/ (source-of-truth on GitHub). ALLOWED_USER_IDS gates access. CRITICAL: When replacing module files (soundcloud.py, downloader.py), grep bot.py for ALL imports first — user-provided replacement code often missing functions bot.py needs. downloader.py is SYNC (download_track_audio(data, path)->bool), NOT async.
 §
 Obsidian vault: /data/obsidian-vault from irobsi/obsidian-valut. Backup: hermesbackup2/hermes-inure via backup.sh, cron every 24h. Both use git credential helpers (NOT embedded tokens — GitHub push protection blocks secrets). Bot code must be synced between workspace and vault.
 §
